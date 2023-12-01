@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES2015",
+    "module": "ESNext", // ECMAScript(=ESN)
+    "moduleResolution": "Node",
+    "esModuleInterop": true, // ES -> Common
+    "lib": ["ESNext", "DOM"],
+    "strict": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
+}
