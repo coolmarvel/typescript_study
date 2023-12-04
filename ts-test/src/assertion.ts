@@ -30,3 +30,10 @@ function getValue(x: string | number, isNumber: boolean) {
 }
 getValue("hello world", false);
 getValue(3.1415926535, true);
+
+// 할당 단언(Assertion)
+// 할당 단언을 할때에는 : 앞에 !를 붙인다.
+
+let a!: number;
+console.log(a);
+a = 123;
