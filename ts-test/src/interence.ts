@@ -8,7 +8,7 @@
 // 1)
 let num = 12;
 
-// 2)
+// 2) & 3)
 function add(a: number, b = 2) {
   return a + b;
 }
