@@ -54,29 +54,29 @@
 // const windfall = new User<UserBType>({ name: "mykim", age: 4, emails: ["mykim82@wemade.com"] });
 
 // 인터페이스, 제약 조건(Constraints)
-interface MyData<T extends string | number> {
-  name: string;
-  value: T;
-}
+// interface MyData<T extends string | number> {
+//   name: string;
+//   value: T;
+// }
 
-const dataA: MyData<string> = {
-  name: "Data A",
-  value: "hello world",
-};
+// const dataA: MyData<string> = {
+//   name: "Data A",
+//   value: "hello world",
+// };
 
-const dataB: MyData<number> = {
-  name: "Data B",
-  value: 1234,
-};
+// const dataB: MyData<number> = {
+//   name: "Data B",
+//   value: 1234,
+// };
 
-// can't use
-const dataC: MyData<boolean> = {
-  name: "Data C",
-  value: true,
-};
+// // can't use
+// const dataC: MyData<boolean> = {
+//   name: "Data C",
+//   value: true,
+// };
 
-// can't use
-const dataD: MyData<number[]> = {
-  name: "Data D",
-  value: [1, 2, 3, 4],
-};
+// // can't use
+// const dataD: MyData<number[]> = {
+//   name: "Data D",
+//   value: [1, 2, 3, 4],
+// };
