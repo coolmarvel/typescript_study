@@ -94,17 +94,17 @@
 // union = false; // error
 
 // intersection
-interface User {
-  name: string;
-  age: number;
-}
+// interface User {
+//   name: string;
+//   age: number;
+// }
 
-interface Validation {
-  isValid: boolean;
-}
+// interface Validation {
+//   isValid: boolean;
+// }
 
-const coolmarvel: User & Validation = {
-  name: "coolmarvel",
-  age: 27,
-  isValid: true,
-};
+// const coolmarvel: User & Validation = {
+//   name: "coolmarvel",
+//   age: 27,
+//   isValid: true,
+// };

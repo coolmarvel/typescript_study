@@ -72,33 +72,33 @@
 // logValues(marvel);
 
 // 확장(상속)
-interface UserA {
-  name: string;
-  age: number;
-}
-interface UserB extends UserA {
-  isValid: boolean;
-}
-const marvel: UserA = {
-  name: "coolmarvel",
-  age: 27,
-};
-const windfall: UserB = {
-  name: "mykim",
-  age: 4,
-  isValid: true,
-};
+// interface UserA {
+//   name: string;
+//   age: number;
+// }
+// interface UserB extends UserA {
+//   isValid: boolean;
+// }
+// const marvel: UserA = {
+//   name: "coolmarvel",
+//   age: 27,
+// };
+// const windfall: UserB = {
+//   name: "mykim",
+//   age: 4,
+//   isValid: true,
+// };
 
-interface FullName {
-  firstName: string;
-  lastName: string;
-}
-interface FullName {
-  middleName: string;
-  lastName: string;
-}
-const fullName: FullName = {
-  firstName: "Lee",
-  middleName: "Seong",
-  lastName: "Hyun",
-};
+// interface FullName {
+//   firstName: string;
+//   lastName: string;
+// }
+// interface FullName {
+//   middleName: string;
+//   lastName: string;
+// }
+// const fullName: FullName = {
+//   firstName: "Lee",
+//   middleName: "Seong",
+//   lastName: "Hyun",
+// };
