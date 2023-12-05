@@ -24,31 +24,59 @@
 // console.log(toArray<Arr>([1, 2], [3, 4])); // Arr(Tuple)
 
 // Class
-class User<P> {
-  constructor(public payload: P) {}
+// class User<P> {
+//   constructor(public payload: P) {}
 
-  getPayload() {
-    return this.payload;
-  }
-}
+//   getPayload() {
+//     return this.payload;
+//   }
+// }
 
-interface UserAType {
+// interface UserAType {
+//   name: string;
+//   age: number;
+//   isValid: boolean;
+// }
+
+// interface UserBType {
+//   name: string;
+//   age: number;
+//   emails: string[];
+// }
+
+// const coolmarvel = new User<UserAType>({
+//   name: "coolmarvel",
+//   age: 27,
+//   isValid: true,
+//   //   emails: [], // ?!
+// });
+
+// const windfall = new User<UserBType>({ name: "mykim", age: 4, emails: ["mykim82@wemade.com"] });
+
+// 인터페이스, 제약 조건(Constraints)
+interface MyData<T extends string | number> {
   name: string;
-  age: number;
-  isValid: boolean;
+  value: T;
 }
 
-interface UserBType {
-  name: string;
-  age: number;
-  emails: string[];
-}
+const dataA: MyData<string> = {
+  name: "Data A",
+  value: "hello world",
+};
 
-const coolmarvel = new User<UserAType>({
-  name: "coolmarvel",
-  age: 27,
-  isValid: true,
-  //   emails: [], // ?!
-});
+const dataB: MyData<number> = {
+  name: "Data B",
+  value: 1234,
+};
 
-const windfall = new User<UserBType>({ name: "mykim", age: 4, emails: ["mykim82@wemade.com"] });
+// can't use
+const dataC: MyData<boolean> = {
+  name: "Data C",
+  value: true,
+};
+
+// can't use
+const dataD: MyData<number[]> = {
+  name: "Data D",
+  value: [1, 2, 3, 4],
+};
