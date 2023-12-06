@@ -19,7 +19,7 @@ export class BoardService {
   }
 
   find(id: number) {
-    const index = this.boards.findIndex((board) => board.id === id);
+    const index = this.getBoardId(id);
 
     return this.boards[index];
   }
@@ -29,6 +29,19 @@ export class BoardService {
     this.boards.push(newBoard);
 
     return newBoard;
+  }
+
+  update(id: number, data) {
+    const index = this.getBoardId(id);
+    if (index > -1) {
+      this.boards[index] = { ...this.boards[index], ...data };
+    }
+
+    return null;
+  }
+
+  getBoardId(id: number) {
+    return this.boards.findIndex((board) => board.id === id);
   }
 
   getNextId() {

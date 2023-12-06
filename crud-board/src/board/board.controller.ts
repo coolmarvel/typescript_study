@@ -30,7 +30,7 @@ export class BoardController {
 
   @Put(':id')
   update(@Param('id') id: number, @Body() data) {
-    return 'update';
+    return this.boardService.update(Number(id), data);
   }
 
   @Delete(':id')
