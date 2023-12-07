@@ -3,9 +3,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BoardModule } from './board/board.module';
 import { LogginMiddleware } from './middlewares/logging.middleware';
+import ConfiguModule from './config';
 
 @Module({
-  imports: [BoardModule],
+  imports: [ConfiguModule(), BoardModule],
   controllers: [AppController],
   providers: [AppService],
 })

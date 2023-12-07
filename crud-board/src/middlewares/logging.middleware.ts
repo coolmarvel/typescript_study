@@ -5,13 +5,12 @@ export class LogginMiddleware implements NestMiddleware {
   private readonly logger = new Logger();
 
   use(req: Request, res: Response, next: NextFunction) {
-    const method = req.method;
-    const originalUrl = req.originalUrl;
+    const { method, originalUrl } = req;
 
     const startTime = Date.now();
 
     res.on('finish', () => {
-      const statusCode = req.statusCode;
+      const { statusCode } = req;
       const responseTime = Date.now() - startTime;
 
       this.logger.log(
