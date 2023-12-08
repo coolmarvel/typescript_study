@@ -15,7 +15,7 @@ export class UserEntity {
   username: string;
 
   @ApiProperty({ description: '유저 비밀번호', example: 'password' })
-  @Column({ select: false })
+  @Column()
   password: string;
 
   @ApiProperty({ description: '작성한 게시글' })
