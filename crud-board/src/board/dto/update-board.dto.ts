@@ -1,15 +1,14 @@
-import { OmitType, PartialType, PickType } from '@nestjs/swagger';
-import { IsOptional, MaxLength, MinLength } from 'class-validator';
-import { CreateBoardDto } from './create-board.dto';
+// import { OmitType, PartialType, PickType } from '@nestjs/swagger';
+
+// import { CreateBoardDto } from './create-board.dto';
+
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty } from 'class-validator';
 
 export class UpdateBoardDto {
-  @IsOptional()
-  @MinLength(2)
-  @MaxLength(20)
-  name?: string;
-
-  @IsOptional()
-  content?: string;
+  @IsNotEmpty()
+  @ApiProperty({ description: '내용', required: true, example: 'content' })
+  content: string;
 }
 
 // 주의해야 할 점 CreateBoardDto에서 @IsNotEmpty() 데코레이터 속성도 가져오기 때문에 Optional하게 사용할 수 없음.

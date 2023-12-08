@@ -25,8 +25,8 @@ export class BoardController {
   }
 
   @Put(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe()) data: UpdateBoardDto) {
-    return this.boardService.update(id, data);
+  async update(@Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe()) data: UpdateBoardDto) {
+    return await this.boardService.update(id, data);
   }
 
   @Delete(':id')

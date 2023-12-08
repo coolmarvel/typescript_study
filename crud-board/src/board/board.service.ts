@@ -46,15 +46,11 @@ export class BoardService {
     return true;
   }
 
-  update(id: number, data: UpdateBoardDto) {
-    const index = this.getBoardId(id);
-    if (index > -1) {
-      this.boards[index] = { ...this.boards[index], ...data };
+  async update(id: number, data: UpdateBoardDto) {
+    const board = await this.boardRepository.findOneBy({ id: id });
 
-      return this.boards[index];
-    }
-
-    return null;
+    if (!board) throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    else return await this.boardRepository.update(id, { ...data });
   }
 
   delete(id: number) {
