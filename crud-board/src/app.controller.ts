@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  HttpException,
-  HttpStatus,
-  Logger,
-  Param,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, Logger, Param, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Ip } from './decorators/ip.decorator';
 import { ConfigService } from '@nestjs/config';
@@ -31,7 +23,7 @@ export class AppController {
 
     // console.log(ip);
 
-    console.log(this.configService.get('ENVIRONMENT'))
+    console.log(this.configService.get('ENVIRONMENT'));
     return this.appService.getHello();
   }
 

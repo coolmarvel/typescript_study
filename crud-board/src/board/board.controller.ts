@@ -30,7 +30,7 @@ export class BoardController {
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.boardService.delete(id);
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    return await this.boardService.delete(id);
   }
 }

@@ -13,9 +13,7 @@ export class LogginMiddleware implements NestMiddleware {
       const { statusCode } = req;
       const responseTime = Date.now() - startTime;
 
-      this.logger.log(
-        `[${method}] ${originalUrl} ${statusCode} - ${responseTime}ms`,
-      );
+      this.logger.log(`[${method}] ${originalUrl} ${statusCode} - ${responseTime}ms`);
     });
 
     next();
