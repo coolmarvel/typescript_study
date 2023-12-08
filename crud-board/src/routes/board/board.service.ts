@@ -8,10 +8,7 @@ import { UserEntity } from 'src/entities/user.entity';
 
 @Injectable()
 export class BoardService {
-  constructor(
-    @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,
-    @InjectRepository(BoardEntity) private boardRepository: Repository<BoardEntity>,
-  ) {}
+  constructor(@InjectRepository(BoardEntity) private boardRepository: Repository<BoardEntity>) {}
 
   async findAll() {
     return await this.boardRepository.find();
