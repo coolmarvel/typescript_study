@@ -20,8 +20,8 @@ export class BoardController {
   }
 
   @Post()
-  create(@Body(new ValidationPipe()) data: CreateBoardDto) {
-    return this.boardService.create(data);
+  async create(@Body(new ValidationPipe()) data: CreateBoardDto) {
+    return await this.boardService.create(data);
   }
 
   @Put(':id')
