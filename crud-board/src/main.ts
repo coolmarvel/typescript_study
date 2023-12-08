@@ -8,12 +8,7 @@ async function bootstrap() {
 
   app.useGlobalFilters(new HttpExceptionFilter());
 
-  const config = new DocumentBuilder()
-    .setTitle('crud-board')
-    .setDescription('The board API description')
-    .setVersion('1.0')
-    .addTag('board')
-    .build();
+  const config = new DocumentBuilder().setTitle('crud-board').setDescription('The board API description').setVersion('1.0').addTag('board').build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
 

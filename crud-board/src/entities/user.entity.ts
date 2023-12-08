@@ -21,4 +21,7 @@ export class UserEntity {
   @ApiProperty({ description: '작성한 게시글' })
   @OneToMany(() => BoardEntity, (board) => board.user)
   boards: BoardEntity[];
+
+  @Column({ select: false, nullable: true, insert: false, update: false })
+  boardCount?: number;
 }
