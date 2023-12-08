@@ -13,7 +13,6 @@ export class UserController {
 
   @Post()
   async signup(@Body(new ValidationPipe()) data: CreateUserDto) {
-    console.log(data);
     return await this.userService.createUser(data);
   }
 
