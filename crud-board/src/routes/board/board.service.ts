@@ -4,7 +4,6 @@ import { UpdateBoardDto } from './dto/update-board.dto';
 import { BoardEntity } from 'src/entities/board.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserEntity } from 'src/entities/user.entity';
 
 @Injectable()
 export class BoardService {
