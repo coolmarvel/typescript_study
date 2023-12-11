@@ -21,6 +21,4 @@ export class UserController {
   async login(@Body(new ValidationPipe()) data: LoginUserDto) {
     return await this.userService.login(data);
   }
-
-  me() {}
 }
