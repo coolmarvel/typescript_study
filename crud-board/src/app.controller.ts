@@ -2,6 +2,7 @@ import { Controller, Get, Logger, Param, Post, Query, Request, UseGuards } from 
 import { ConfigService } from '@nestjs/config';
 import { AppService } from './app.service';
 import { AuthGuard } from '@nestjs/passport';
+import { LocalAuthGuard } from './auth/local-auth.guard';
 
 @Controller()
 export class AppController {
@@ -27,7 +28,7 @@ export class AppController {
     return `${name} hello`;
   }
 
-  @UseGuards(AuthGuard('local'))
+  @UseGuards(LocalAuthGuard)
   @Post('login')
   login(@Request() req) {
     return req.user;
