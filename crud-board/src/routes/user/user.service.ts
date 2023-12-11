@@ -5,6 +5,7 @@ import { UserEntity } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 
+import * as jwt from 'jsonwebtoken';
 import { hash, compare } from 'bcrypt';
 import { LoginUserDto } from './dto/login-user.dto';
 
@@ -38,7 +39,11 @@ export class UserService {
     const match = await compare(password, user.password);
     if (!match) throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
 
-    return user;
+    const payload = { username, name: user.name };
+
+    const accessToken = jwt.sign(payload, 'secret_key', { expiresIn: '1h' });
+
+    return accessToken;
   }
 
   async encryptPassword(password) {
