@@ -1,8 +1,24 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Request,
+  UnauthorizedException,
+  UseGuards,
+  ValidationPipe,
+} from '@nestjs/common';
 import { BoardService } from './board.service';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { UserInfo } from 'src/decorators/user-info.decorator';
+import { userInfo } from 'os';
 
 @Controller('board')
 @ApiTags('board')
@@ -20,17 +36,22 @@ export class BoardController {
   }
 
   @Post()
-  async create(@Body(new ValidationPipe()) data: CreateBoardDto) {
-    return await this.boardService.create(data);
+  @UseGuards(JwtAuthGuard)
+  async create(@UserInfo() userInfo, @Body('content') content: string) {
+    if (!userInfo) throw new UnauthorizedException('Unauthorized');
+
+    return await this.boardService.create({ userId: userInfo.id, content });
   }
 
   @Put(':id')
-  async update(@Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe()) data: UpdateBoardDto) {
-    return await this.boardService.update(id, data);
+  @UseGuards(JwtAuthGuard)
+  async update(@UserInfo() userInfo, @Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe()) data: UpdateBoardDto) {
+    return await this.boardService.update(userInfo.id, id, data);
   }
 
   @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: number) {
-    return await this.boardService.delete(id);
+  @UseGuards(JwtAuthGuard)
+  async remove(@UserInfo() userInfo, @Param('id', ParseIntPipe) id: number) {
+    return await this.boardService.delete(userInfo.id, id);
   }
 }

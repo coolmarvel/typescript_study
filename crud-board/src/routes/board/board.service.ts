@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 import { BoardEntity } from 'src/entities/board.entity';
@@ -24,25 +24,29 @@ export class BoardService {
   }
 
   async create(data: CreateBoardDto) {
-    const newBoard = this.boardRepository.create(data);
-    await this.boardRepository.save(newBoard);
-
-    return true;
+    return await this.boardRepository.save(data);
   }
 
-  async update(id: number, data: UpdateBoardDto) {
-    await this.getBoardById(id);
+  async update(userId: number, id: number, data: UpdateBoardDto) {
+    const board = await this.getBoardById(id);
+    if (!board) throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+
+    if (userId !== board.userId) throw new UnauthorizedException();
 
     return await this.boardRepository.update(id, { ...data });
   }
 
-  async delete(id: number) {
+  async delete(userId: number, id: number) {
     const board = await this.getBoardById(id);
+    if (!board) throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+
+    if (userId !== board.userId) throw new UnauthorizedException();
+
     return await this.boardRepository.remove(board);
   }
 
   async getBoardById(id: number) {
-    const board = await this.boardRepository.findOneBy({ id: id });
+    const board = await this.boardRepository.findOneBy({ id });
 
     if (!board) throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     else return board;
