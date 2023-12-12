@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -7,6 +7,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @UseInterceptors()
   @Get()
   async getUsers() {
     return await this.userService.getUsers();

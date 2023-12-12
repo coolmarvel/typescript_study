@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { BoardEntity } from './board.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'user' })
 export class UserEntity {
@@ -16,6 +17,7 @@ export class UserEntity {
 
   @ApiProperty({ description: '유저 비밀번호', example: 'password' })
   @Column()
+  @Exclude()
   password: string;
 
   @ApiProperty({ description: '작성한 게시글' })
