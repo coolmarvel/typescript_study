@@ -38,6 +38,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
     if (requiredRoles) {
       const userId = decoded['sub'];
+
       return this.userService.checkUserIsAdmin(userId);
     }
 

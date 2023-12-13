@@ -9,7 +9,7 @@ import { VideoService } from './video.service';
 
 @ApiTags('Video')
 @ApiExtraModels(FindVideoReqDto, FindVideoResDto, PageReqDto, CreateVideoResDto, PageResDto)
-@Controller('video')
+@Controller('api/videos')
 export class VideoController {
   constructor(private readonly videoService: VideoService) {}
 
