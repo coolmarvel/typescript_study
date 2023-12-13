@@ -13,7 +13,7 @@ export class SignupReqDto {
 
   @ApiProperty({ required: true, example: 'Password!' })
   @Matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{10,30}$/)
-  passwordContirm: string;
+  passwordConfirm: string;
 }
 
 export class SigninReqDto {
