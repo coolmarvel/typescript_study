@@ -17,5 +17,6 @@ async function bootstrap() {
 
   await app.listen(port);
   console.log(`listening on http://localhost:${port}`);
+  console.log(`STAGE: ${process.env.STAGE}`);
 }
 bootstrap();
