@@ -19,5 +19,5 @@ export class User {
   updatedAt: Date;
 
   @OneToMany(() => Video, (video) => video.user)
-  vidoes: Video[];
+  videos: Video[];
 }

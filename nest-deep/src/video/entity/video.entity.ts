@@ -1,9 +1,13 @@
 import { User } from 'src/user/entity/user.entity';
-import { Column, CreateDateColumn, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
+@Entity()
 export class Video {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column()
+  title: string;
 
   @Column()
   mimetype: string;
@@ -17,7 +21,7 @@ export class Video {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.vidoes)
+  @ManyToOne(() => User, (user) => user.videos)
   @JoinColumn({ name: 'user_id' })
   user: User;
 }

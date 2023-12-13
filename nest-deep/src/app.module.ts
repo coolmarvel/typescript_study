@@ -17,7 +17,7 @@ import { AnalyticsModule } from './analytics/analytics.module';
       password: 'postgres',
       database: 'postgres',
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: false,
       logging: true,
     }),
     VideoModule,
