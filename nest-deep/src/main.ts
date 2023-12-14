@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerCustomOptions, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from './common/interceptor/transform.interceptor';
 import { WinstonModule, utilities } from 'nest-winston';
@@ -26,8 +26,9 @@ async function bootstrap() {
     .setVersion('1.0.0')
     .addBearerAuth()
     .build();
+  const customOptions: SwaggerCustomOptions = { swaggerOptions: { persistAuthorization: true } };
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api-docs', app, document);
+  SwaggerModule.setup('api-docs', app, document, customOptions);
 
   // ValidationPipe Global Apply
   app.useGlobalPipes(new ValidationPipe({ transform: true })); // class-transformer apply
