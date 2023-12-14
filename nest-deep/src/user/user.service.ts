@@ -34,4 +34,12 @@ export class UserService {
 
     return user.role === Role.Admin;
   }
+
+  async createBulk() {
+    for (let i = 1; i <= 10000; i++) {
+      await this.userRepository.save(this.userRepository.create({ email: `nestjs_${i}@naver.com`, password: 'Password!' }));
+    }
+
+    return;
+  }
 }
