@@ -1,5 +1,5 @@
 import { BadRequestException, Body, Controller, Headers, Post, Request } from '@nestjs/common';
-import { ApiExtraModels, ApiProperty, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiExtraModels, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { RefreshResDto, SigninResDto, SignupResDto } from './dto/res.dto';
 import { Public } from 'src/common/decorator/public.decorator';
@@ -19,9 +19,9 @@ export class AuthController {
   async signup(@Body() { email, password, passwordConfirm }: SignupReqDto) {
     if (password !== passwordConfirm) throw new BadRequestException();
 
-    const { id } = await this.authService.signup(email, password);
+    const { id, accessToken, refreshToken } = await this.authService.signup(email, password);
 
-    return id;
+    return { id, accessToken, refreshToken };
   }
 
   @ApiPostResponse(SigninResDto)
@@ -31,6 +31,9 @@ export class AuthController {
     return this.authService.signin(email, password);
   }
 
+  @ApiPostResponse(RefreshResDto)
+  @ApiBearerAuth()
+  @Post('refresh')
   async refresh(@Headers('authorization') authorization, @User() user: UserAfterAuth) {
     const token = /Bearer\s(.+)/.exec(authorization)[1];
     const { accessToken, refreshToken } = await this.authService.refresh(token, user.id);
