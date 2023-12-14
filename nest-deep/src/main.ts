@@ -37,7 +37,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new TransformInterceptor());
 
   await app.listen(port);
+  console.log(`stage: ${process.env.STAGE}`);
   console.log(`listening on http://localhost:${port}`);
-  console.log(`STAGE: ${process.env.STAGE}`);
 }
 bootstrap();
