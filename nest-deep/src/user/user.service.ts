@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entity/user.entity';
 import { Repository } from 'typeorm';
+import { User } from './entity/user.entity';
 import { Role } from './enum/user.enum';
 
 @Injectable()
@@ -13,14 +13,7 @@ export class UserService {
   }
 
   async findOne(id: string) {
-    return 'find each user';
-  }
-
-  async create(email: string, password: string) {
-    const user = this.userRepository.create({ email, password });
-    await this.userRepository.save(user);
-
-    return user;
+    return 'find user';
   }
 
   async findOneByEmail(email: string) {
@@ -37,9 +30,8 @@ export class UserService {
 
   async createBulk() {
     for (let i = 1; i <= 10000; i++) {
-      await this.userRepository.save(this.userRepository.create({ email: `nestjs_${i}@naver.com`, password: 'Password!' }));
+      await this.userRepository.save(this.userRepository.create({ email: `nestjs${i}@fastcampus.com`, password: 'Password1!' }));
     }
-
     return;
   }
 }
