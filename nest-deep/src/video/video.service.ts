@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Video } from './entity/video.entity';
 import { Repository } from 'typeorm';
+import { Video } from './entity/video.entity';
 
 @Injectable()
 export class VideoService {
   constructor(@InjectRepository(Video) private videoRepository: Repository<Video>) {}
-  
+
   async create() {
-    return 'create video';
+    return 'create';
   }
 
   async findAll() {
