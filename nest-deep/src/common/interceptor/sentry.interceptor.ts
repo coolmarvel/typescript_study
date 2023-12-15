@@ -1,14 +1,14 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import * as Sentry from '@sentry/node';
 import { IncomingWebhook } from '@slack/webhook';
-import { Request } from 'express';
-import { catchError } from 'rxjs';
+import { Request as ExpressRequest } from 'express';
+import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class SentryInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler<any>) {
+  intercept(context: ExecutionContext, next: CallHandler) {
     const http = context.switchToHttp();
-    const request = http.getRequest<Request>();
+    const request = http.getRequest<ExpressRequest>();
     const { url } = request;
 
     return next.handle().pipe(
@@ -18,7 +18,7 @@ export class SentryInterceptor implements NestInterceptor {
         webhook.send({
           attachments: [
             {
-              text: 'NesteJS Project Error Occured',
+              text: 'NestJS 프로젝트 에러 발생',
               fields: [{ title: `Error message: ${error.response?.message || error.message}`, value: `URL: ${url}\n${error.stack}`, short: false }],
               ts: Math.floor(new Date().getTime() / 1000).toString(),
             },
