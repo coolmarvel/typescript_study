@@ -21,7 +21,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [context.getHandler(), context.getClass()]);
-
     if (isPublic) return true;
 
     const http = context.switchToHttp();
@@ -37,7 +36,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     }
 
     const requiredRoles = this.reflector.getAllAndOverride<Role[]>(ROLES_KEY, [context.getHandler(), context.getClass()]);
-
     if (requiredRoles) {
       const userId = decoded['sub'];
 

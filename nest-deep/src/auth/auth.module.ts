@@ -15,13 +15,13 @@ import { RefreshToken } from './entity/refresh-token.entity';
   imports: [
     UserModule,
     PassportModule,
-    TypeOrmModule.forFeature([RefreshToken]),
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
         return { global: true, secret: configService.get('jwt.secret'), signOptions: { expiresIn: '1d' } };
       },
     }),
+    TypeOrmModule.forFeature([RefreshToken]),
   ],
   providers: [AuthService, JwtStrategy, { provide: APP_GUARD, useClass: JwtAuthGuard }, Logger],
   controllers: [AuthController],

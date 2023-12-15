@@ -5,6 +5,7 @@ import { UserService } from 'src/user/user.service';
 import { RefreshToken } from './entity/refresh-token.entity';
 import { DataSource, Repository } from 'typeorm';
 import { User } from 'src/user/entity/user.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -12,12 +13,8 @@ export class AuthService {
     private dataSource: DataSource,
     private userService: UserService,
     private jwtService: JwtService,
-    @InjectRepository(RefreshToken) private refreshtokenRepository: Repository<RefreshToken>,
+    @InjectRepository(RefreshToken) private refreshTokenRepository: Repository<RefreshToken>,
   ) {}
-
-  async validateUser(email: string, password: string): Promise<any> {
-    return null;
-  }
 
   async signup(email: string, password: string) {
     const queryRunner = this.dataSource.createQueryRunner();
@@ -29,16 +26,19 @@ export class AuthService {
       const user = await this.userService.findOneByEmail(email);
       if (user) throw new BadRequestException();
 
-      const userEntity = queryRunner.manager.create(User, { email, password });
+      const saltRounds = 10;
+      const hash = await bcrypt.hash(password, saltRounds);
+      const userEntity = queryRunner.manager.create(User, { email, password: hash });
       await queryRunner.manager.save(userEntity);
 
-      const accessToken = this.generateAccessToken(userEntity.id);
+      const accessToken = this.genereateAccessToken(userEntity.id);
       const refreshTokenEntity = queryRunner.manager.create(RefreshToken, {
         user: { id: userEntity.id },
-        token: this.generateRefreshToken(userEntity.id),
+        token: this.genereateRefreshToken(userEntity.id),
       });
+
       queryRunner.manager.save(refreshTokenEntity);
-      queryRunner.commitTransaction();
+      await queryRunner.commitTransaction();
 
       return { id: userEntity.id, accessToken, refreshToken: refreshTokenEntity.token };
     } catch (e) {
@@ -51,49 +51,55 @@ export class AuthService {
   }
 
   async signin(email: string, password: string) {
-    const user = await this.userService.findOneByEmail(email);
-    if (!user) throw new UnauthorizedException();
+    const user = await this.validateUser(email, password);
 
-    const isMatch = password == user.password;
-    if (!isMatch) throw new UnauthorizedException();
-
-    const refreshToken = await this.generateRefreshToken(user.id);
+    const refreshToken = this.genereateRefreshToken(user.id);
     await this.createRefreshTokenUsingUser(user.id, refreshToken);
 
-    return { accessToken: this.generateAccessToken(user.id), refreshToken };
+    return { accessToken: this.genereateAccessToken(user.id), refreshToken };
   }
 
   async refresh(token: string, userId: string) {
-    const refreshTokenEntity = await this.refreshtokenRepository.findOneBy({ token });
+    const refreshTokenEntity = await this.refreshTokenRepository.findOneBy({ token });
     if (!refreshTokenEntity) throw new BadRequestException();
 
-    const accessToken = this.generateAccessToken(userId);
-    const refreshToken = this.generateRefreshToken(userId);
+    const accessToken = this.genereateAccessToken(userId);
+    const refreshToken = this.genereateRefreshToken(userId);
     refreshTokenEntity.token = refreshToken;
 
-    await this.refreshtokenRepository.save(refreshTokenEntity);
+    await this.refreshTokenRepository.save(refreshTokenEntity);
 
     return { accessToken, refreshToken };
   }
 
-  private generateAccessToken(userId: string) {
+  private genereateAccessToken(userId: string) {
     const payload = { sub: userId, tokenType: 'access' };
 
     return this.jwtService.sign(payload, { expiresIn: '1d' });
   }
 
-  private generateRefreshToken(userId: string) {
+  private genereateRefreshToken(userId: string) {
     const payload = { sub: userId, tokenType: 'refresh' };
 
     return this.jwtService.sign(payload, { expiresIn: '30d' });
   }
 
   private async createRefreshTokenUsingUser(userId: string, refreshToken: string) {
-    let refreshTokenEntity = await this.refreshtokenRepository.findOneBy({ user: { id: userId } });
+    let refreshTokenEntity = await this.refreshTokenRepository.findOneBy({ user: { id: userId } });
 
     if (refreshTokenEntity) refreshTokenEntity.token = refreshToken;
-    else refreshTokenEntity = this.refreshtokenRepository.create({ user: { id: userId }, token: refreshToken });
+    else refreshTokenEntity = this.refreshTokenRepository.create({ user: { id: userId }, token: refreshToken });
 
-    await this.refreshtokenRepository.save(refreshTokenEntity);
+    await this.refreshTokenRepository.save(refreshTokenEntity);
+  }
+
+  private async validateUser(email: string, password: string): Promise<User> {
+    const user = await this.userService.findOneByEmail(email);
+    if (!user) throw new UnauthorizedException();
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) throw new UnauthorizedException();
+
+    return user;
   }
 }

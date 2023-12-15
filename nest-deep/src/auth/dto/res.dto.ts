@@ -16,7 +16,7 @@ export class SigninResDto {
   accessToken: string;
 
   @ApiProperty({ required: true })
-  refreshtoken: string;
+  refreshToken: string;
 }
 
 export class RefreshResDto {
