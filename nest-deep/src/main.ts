@@ -31,12 +31,7 @@ async function bootstrap() {
   if (SWAGGER_ENVS.includes(stage)) {
     app.use(
       ['/docs', '/docs-json'],
-      basicAuth({
-        challenge: true,
-        users: {
-          [configService.get('swagger.user')]: configService.get('swagger.password'),
-        },
-      }),
+      basicAuth({ challenge: true, users: { [configService.get('swagger.user')]: configService.get('swagger.password') } }),
     );
     const config = new DocumentBuilder()
       .setTitle('NestJS project')

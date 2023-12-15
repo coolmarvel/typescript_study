@@ -30,7 +30,7 @@ export class UserService {
 
   async createBulk() {
     for (let i = 1; i <= 10000; i++) {
-      await this.userRepository.save(this.userRepository.create({ email: `nestjs${i}@fastcampus.com`, password: 'Password1!' }));
+      await this.userRepository.save(this.userRepository.create({ email: `nestjs_${i}@naver.com`, password: 'Password1!' }));
     }
     return;
   }

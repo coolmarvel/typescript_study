@@ -1,23 +1,22 @@
 import { Logger, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { AnalyticsModule } from './analytics/analytics.module';
+import { UserModule } from './user/user.module';
 import { VideoModule } from './video/video.module';
 import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
-import { AnalyticsModule } from './analytics/analytics.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import postgresConfig from './config/postgres.config';
 import jwtConfig from './config/jwt.config';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
-import { HealthModule } from './health/health.module';
-import { ThrottlerModule } from '@nestjs/throttler';
 import swaggerConfig from './config/swagger.config';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { HealthModule } from './health/health.module';
 import sentryConfig from './config/sentry.config';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
-    ThrottlerModule.forRoot(),
+    ThrottlerModule.forRoot({ ttl: 60, limit: 10 }),
     ConfigModule.forRoot({ isGlobal: true, load: [postgresConfig, jwtConfig, swaggerConfig, sentryConfig] }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
@@ -33,21 +32,18 @@ import sentryConfig from './config/sentry.config';
           synchronize: false,
         };
         // 주의! local 환경에서만 개발 편의성을 위해 활용
-        if (configService.get('STAGE') === 'local') {
-          console.info('Sync Postgres!');
-          obj = Object.assign(obj, { synchronize: true, logging: true });
-        }
+        if (configService.get('STAGE') === 'local') obj = Object.assign(obj, { logging: true });
+
         return obj;
       },
     }),
-    VideoModule,
     AuthModule,
     UserModule,
+    VideoModule,
     AnalyticsModule,
     HealthModule,
   ],
-  controllers: [AppController],
-  providers: [Logger, AppService],
+  providers: [AppService, Logger],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {

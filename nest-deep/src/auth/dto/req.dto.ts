@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, Matches, MaxLength } from 'class-validator';
 
 export class SignupReqDto {
-  @ApiProperty({ required: true, example: 'marvel97@naver.com.com' })
+  @ApiProperty({ required: true, example: 'marvel97@naver.com' })
   @IsEmail()
   @MaxLength(30)
   email: string;
