@@ -10,6 +10,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import postgresConfig from './config/postgres.config';
 import jwtConfig from './config/jwt.config';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
     AuthModule,
     UserModule,
     AnalyticsModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [Logger, AppService],

@@ -19,11 +19,14 @@ async function bootstrap() {
     }),
   });
 
+  app.enableCors({ origin: 'http://localhost:3000', credentials: true });
+
   // Swagger
   const config = new DocumentBuilder()
     .setTitle('NestJS Project')
     .setDescription('NestJS Project API Description')
     .setVersion('1.0.0')
+    .addServer('http://localhost:3000')
     .addBearerAuth()
     .build();
   const customOptions: SwaggerCustomOptions = { swaggerOptions: { persistAuthorization: true } };
