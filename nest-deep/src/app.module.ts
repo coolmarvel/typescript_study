@@ -11,10 +11,14 @@ import postgresConfig from './config/postgres.config';
 import jwtConfig from './config/jwt.config';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { HealthModule } from './health/health.module';
+import { ThrottlerModule } from '@nestjs/throttler';
+import swaggerConfig from './config/swagger.config';
+import sentryConfig from './config/sentry.config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, load: [postgresConfig, jwtConfig] }),
+    ThrottlerModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true, load: [postgresConfig, jwtConfig, swaggerConfig, sentryConfig] }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
@@ -26,6 +30,7 @@ import { HealthModule } from './health/health.module';
           username: configService.get('postgres.username'),
           password: configService.get('postgres.password'),
           autoLoadEntities: true,
+          synchronize: false,
         };
         // 주의! local 환경에서만 개발 편의성을 위해 활용
         if (configService.get('STAGE') === 'local') {
@@ -45,7 +50,7 @@ import { HealthModule } from './health/health.module';
   providers: [Logger, AppService],
 })
 export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
+  configure(consumer: MiddlewareConsumer): void {
     consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }
