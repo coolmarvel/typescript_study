@@ -13,6 +13,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { HealthModule } from './health/health.module';
 import sentryConfig from './config/sentry.config';
 import { AppService } from './app.service';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { AppService } from './app.service';
     VideoModule,
     AnalyticsModule,
     HealthModule,
+    EmailModule,
   ],
   providers: [AppService, Logger],
 })
