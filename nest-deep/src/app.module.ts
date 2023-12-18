@@ -16,7 +16,7 @@ import { AppService } from './app.service';
 
 @Module({
   imports: [
-    ThrottlerModule.forRoot({ ttl: 60, limit: 10 }),
+    ThrottlerModule.forRoot([{ ttl: 60, limit: 10 }]),
     ConfigModule.forRoot({ isGlobal: true, load: [postgresConfig, jwtConfig, swaggerConfig, sentryConfig] }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
