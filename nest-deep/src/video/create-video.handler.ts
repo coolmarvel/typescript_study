@@ -5,6 +5,8 @@ import { Video } from './entity/video.entity';
 import { User } from 'src/user/entity/user.entity';
 import { VideoCreatedEvent } from './event/video.created.event';
 import { Injectable } from '@nestjs/common';
+import { join } from 'path';
+import { writeFile } from 'fs/promises';
 
 @Injectable()
 @CommandHandler(CreateVideoCommand)
@@ -23,7 +25,7 @@ export class CreateVideoHandler implements ICommandHandler<CreateVideoCommand> {
     let error: any;
     try {
       const user = await queryRunner.manager.findOneBy(User, { id: userId });
-      const video = await queryRunner.manager.save(queryRunner.manager.create(Video, { title, mimetype: 'mp4', user }));
+      const video = await queryRunner.manager.save(queryRunner.manager.create(Video, { title, mimetype, user }));
 
       await this.uploadVideo(video.id, extension, buffer);
 
@@ -41,6 +43,8 @@ export class CreateVideoHandler implements ICommandHandler<CreateVideoCommand> {
   }
 
   private async uploadVideo(id: string, extension: string, buffer: Buffer) {
-    console.log('upload video');
+    const filePath = join(process.cwd(), 'video-storage', `${id}.${extension}`);
+
+    await writeFile(filePath, buffer);
   }
 }
