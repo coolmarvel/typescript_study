@@ -54,7 +54,7 @@ export class VideoController {
   }
 
   @ApiBearerAuth()
-  @Throttle(3, 60)
+  @Throttle({ default: { limit: 3, ttl: 60 } })
   @Get(':id/download')
   async download(@Param() { id }: FindVideoReqDto) {
     return this.videoService.download(id);
