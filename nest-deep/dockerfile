@@ -4,8 +4,6 @@ WORKDIR /app
 ADD . .
 RUN mkdir -p video-storage
 
-# RUN apt-get --assume-yes install yarn && apt-mark hold yarn 
-
 RUN yarn install
 RUN yarn build
 
