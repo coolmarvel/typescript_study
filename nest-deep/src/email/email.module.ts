@@ -7,7 +7,7 @@ import { ConfigService } from '@nestjs/config';
   imports: [
     MailerModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (configService, ConfigService) => ({
+      useFactory: (configService: ConfigService) => ({
         transport: {
           host: 'smtp.gmail.com',
           port: 587,

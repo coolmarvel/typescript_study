@@ -14,11 +14,12 @@ import { HealthModule } from './health/health.module';
 import sentryConfig from './config/sentry.config';
 import { AppService } from './app.service';
 import { EmailModule } from './email/email.module';
+import emailConfig from './config/email.config';
 
 @Module({
   imports: [
     ThrottlerModule.forRoot([{ ttl: 60, limit: 10 }]),
-    ConfigModule.forRoot({ isGlobal: true, load: [postgresConfig, jwtConfig, swaggerConfig, sentryConfig] }),
+    ConfigModule.forRoot({ isGlobal: true, load: [postgresConfig, jwtConfig, swaggerConfig, sentryConfig, emailConfig] }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
