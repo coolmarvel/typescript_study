@@ -5,7 +5,7 @@ on:
     branches: [master]
 
 env:
-  DOKCER_IMAGE: ghcr.io/${{ github.actor }}/typescript_study
+  DOKCER_IMAGE: ghcr.io/${{ github.actor }}/typescript_study/nest-deep
   VERSION: ${{ github.sha }}
   NAME: cicd_test
 
@@ -65,4 +65,4 @@ deploy:
     - name: Docker run
       run: |
         docker stop ${{ env.NAME }} && docker rm ${{ env.NAME }} && docker rmi ${{ env.DOCKER_IMAGE }}:latest
-        docker run --add-host=host.docker.internal:host-gateway -d -p 80:3000 --name ${{ env.NAME }} --restart always ${{ env.DOCKER_IMAGE }}:latest
+        docker run --add-host=host.docker.internal:host-gateway -d -p 20000:3000 --name ${{ env.NAME }} --restart always ${{ env.DOCKER_IMAGE }}:latest
